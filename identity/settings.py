@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'bootstrap4',
     'phonenumber_field',
     'users',
+    'oidc_provider',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,6 @@ STATIC_URL = '/static/'
 # Custom user model
 
 AUTH_USER_MODEL = 'users.User'
+
+
+OIDC_USERINFO = 'users.views.openid_userinfo'

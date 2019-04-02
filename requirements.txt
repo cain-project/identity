@@ -2,3 +2,4 @@ django==2.2
 django-bootstrap4
 django-phonenumber-field
 phonenumbers
+django-oidc-provider
