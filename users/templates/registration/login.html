@@ -1,20 +1,37 @@
-{% extends 'base.html' %}
+{% extends 'registration/base_form.html' %}
 
 {% load bootstrap4 %}
+{% load i18n %}
 
-{% block content %}
+{% block title %}
+    {% trans "Sign In" %}
+{% endblock %}
 
-<div class="row">
-  <div class="col-lg-8 offset-lg-2">
-    <h1>Login</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <button type="submit" class="btn btn-primary">
-            Login
-        </button>
-    </form>
-  </div>
-</div>
+{% block form_content %}
+
+    <h1 class="h3 mb-3 font-weight-normal">
+        <i class="fa fa-fingerprint fa-5x"></i>
+        <span class="sr-only">{% trans "Sign In" %}</span>
+    </h1>
+    <p>&nbsp;</p>
+
+    {% if not form.errors %}
+        <p>
+            {% trans "Please sign in using your credentials." %}
+        </p>
+    {% endif %}
+
+    {% csrf_token %}
+    {% bootstrap_form form layout='inline' %}
+    <button type="submit" class="btn btn-lg btn-primary btn-block">
+        {% trans "Sign In" %}
+    </button>
+
+    <p>&nbsp;</p>
+    <p>
+        <a href="{% url 'password_reset' %}">
+            {% trans "Forgot your password?" %}
+        </a>
+    </p>
 
 {% endblock %}

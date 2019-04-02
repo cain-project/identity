@@ -1,0 +1,51 @@
+{% extends 'registration/base_form.html' %}
+
+{% load bootstrap4 %}
+{% load i18n %}
+
+{% block title %}
+    {% trans "Authorize Application:" %}
+    {{ client.name }}
+{% endblock %}
+
+{% block form_content %}
+
+    <h1 class="h3 mb-3 font-weight-normal">
+        <i class="fa fa-radiation fa-5x"></i>
+        <span class="sr-only">{% trans "Authorize Application" %}</span>
+    </h1>
+
+    <p>
+        {% blocktrans %}
+            <strong>{{ client }}</strong>
+            is requesting access on your behalf.
+        {% endblocktrans %}
+    </p>
+
+    {% csrf_token %}
+    {{ hidden_inputs }}
+
+    <ul class="list-group text-left">
+    {% for scope in scopes %}
+        <li class="list-group-item">
+            <span class="font-weight-bold">
+                {{ scope.name }}
+            </span>
+            <br />
+            <span class="text-muted" style="font-size: smaller;">
+                {{ scope.description }}
+            </span>
+        </li>
+    {% endfor %}
+    </ul>
+
+    <p>&nbsp;</p>
+
+    <button class="btn btn-block btn-danger" type="submit" value="Decline">
+        {% trans "Decline" %}
+    </button>
+    <button class="btn btn-block btn-primary btn-sm" name="allow" type="submit" value="Authorize">
+        {% trans "Authorize" %}
+    </button>
+
+{% endblock %}
