@@ -25,7 +25,7 @@ SECRET_KEY = '#*3u-h=^i67g9d&z29sqvk8#_d-)@*x^m34t$sufwtxwhz46ti'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['identity-b-master.arwn7mv2hr.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['identity-b-master.arwn7mv2hr.us-west-2.elasticbeanstalk.com', 'localhost']
 
 
 # Application definition
