@@ -1,5 +1,6 @@
-from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import AbstractUser
+from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
+from django.core.mail import send_mail
 from django.db import models
 
 from django.utils.translation import gettext as _
@@ -22,7 +23,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractUser):
+class User(AbstractBaseUser, PermissionsMixin):
     """
     The custom user model.
     """
@@ -45,6 +46,24 @@ class User(AbstractUser):
     date_created = models.DateTimeField(_("Created"), auto_now_add=True)
     date_updated = models.DateTimeField(_("Updated"), auto_now=True)
     email = models.EmailField(unique=True, db_index=True)
+
+    is_staff = models.BooleanField(_('Staff status'), default=False,
+                                   help_text=_('Designates whether the user can log into this admin site.'))
+    is_active = models.BooleanField(_('Active'), default=True,
+                                    help_text=_('Designates whether this user should be treated as active. '
+                                                'Unselect this instead of deleting accounts.'))
+
+    def clean(self):
+        super().clean()
+        self.email = self.__class__.objects.normalize_email(self.email)
+
+    def get_short_name(self):
+        """Return the short name for the user."""
+        return self.given_name
+
+    def email_user(self, subject, message, from_email=None, **kwargs):
+        """Send an email to this user."""
+        send_mail(subject, message, from_email, [self.email], **kwargs)
 
     class Meta:
         verbose_name = _("User")

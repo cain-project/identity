@@ -25,7 +25,7 @@ SECRET_KEY = '#*3u-h=^i67g9d&z29sqvk8#_d-)@*x^m34t$sufwtxwhz46ti'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['identity-b-master.arwn7mv2hr.us-west-2.elasticbeanstalk.com', 'localhost']
+ALLOWED_HOSTS = ['*', 'localhost']
 
 
 # Application definition
@@ -77,12 +77,26 @@ WSGI_APPLICATION = 'identity.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+if 'RDS_DB_NAME' in os.environ:  # Production db (PostgreSQL)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
     }
-}
+
+else:  # Development database (SQLite)
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 
 # Password validation
