@@ -90,6 +90,11 @@ class Group(models.Model):
         verbose_name_plural = _("Groups")
         ordering = ('short_name',)
 
+    def get_fields(self):
+        return {"slug": self.slug,
+                "name": self.name,
+                "short_name": self.short_name}
+
     def __str__(self):
         return self.short_name
 
@@ -99,8 +104,8 @@ class Membership(models.Model):
     A user's membership to a group.
     """
     date_created = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="memberships")
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, related_name="memberships")
 
     class Meta:
         verbose_name = _("Membership")
@@ -128,6 +133,10 @@ class Responsibility(models.Model):
         verbose_name_plural = _("Responsibilities")
         ordering = ('-is_available', 'name')
 
+    def get_fields(self):
+        return {"slug": self.slug,
+                "name": self.name, "description": self.description}
+
     def __str__(self):
         return self.name
 
@@ -146,6 +155,11 @@ class Role(models.Model):
         verbose_name_plural = _("Roles")
         ordering = ('date_created',)
         unique_together = ('membership', 'responsibility',)
+
+    def get_fields(self):
+        fields = self.responsibility.get_fields()
+        fields.update({"group": self.membership.group.get_fields()})
+        return fields
 
     def __str__(self):
         return _("%(user)s's role as %(responsibility)s "

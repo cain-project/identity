@@ -138,6 +138,6 @@ STATIC_ROOT = 'static'
 # Custom user model
 
 AUTH_USER_MODEL = 'users.User'
-
-
+LOGIN_REDIRECT_URL = '/'
 OIDC_USERINFO = 'users.views.openid_userinfo'
+OIDC_EXTRA_SCOPE_CLAIMS = 'users.views.OpenIDScopeClaims'
