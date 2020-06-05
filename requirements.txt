@@ -1,6 +1,6 @@
 awscli==1.16.137
 awsebcli==3.15.0
-Django==2.2.4
+Django==2.2.13
 django-bootstrap4==0.0.8
 django-oidc-provider==0.7.0
 django-phonenumber-field==2.3.1
